@@ -50,6 +50,7 @@ interface AppState {
   mobileNavOpen: boolean;
   commandOpen: boolean;
   importOpen: boolean;
+  shortcutsOpen: boolean;
   datasets: Dataset[];
   activeDatasetId: string | null;
   visualizations: ChartConfig[];
@@ -74,6 +75,7 @@ interface AppActions {
   setMobileNav: (open: boolean) => void;
   setCommandOpen: (open: boolean) => void;
   setImportOpen: (open: boolean) => void;
+  setShortcutsOpen: (open: boolean) => void;
   addDataset: (dataset: Dataset) => void;
   selectDataset: (id: string) => void;
   removeDataset: (id: string) => void;
@@ -136,6 +138,7 @@ export const useAppStore = create<AppStore>()((set, get) => ({
   mobileNavOpen: false,
   commandOpen: false,
   importOpen: false,
+  shortcutsOpen: false,
   datasets: [],
   activeDatasetId: null,
   visualizations: [],
@@ -172,6 +175,7 @@ export const useAppStore = create<AppStore>()((set, get) => ({
   setMobileNav: (mobileNavOpen) => set({ mobileNavOpen }),
   setCommandOpen: (commandOpen) => set({ commandOpen }),
   setImportOpen: (importOpen) => set({ importOpen }),
+  setShortcutsOpen: (shortcutsOpen) => set({ shortcutsOpen }),
 
   addDataset: (dataset) => {
     set((state) => ({
