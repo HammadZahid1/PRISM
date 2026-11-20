@@ -127,6 +127,15 @@ describe('application store', () => {
     expect(useAppStore.getState().universeConfig.maxPoints).toBe(defaultSettings.universePoints);
   });
 
+  it('toggles overlay state without creating history entries', () => {
+    const before = useAppStore.getState().history.past.length;
+    useAppStore.getState().setShortcutsOpen(true);
+    expect(useAppStore.getState().shortcutsOpen).toBe(true);
+    useAppStore.getState().setShortcutsOpen(false);
+    expect(useAppStore.getState().shortcutsOpen).toBe(false);
+    expect(useAppStore.getState().history.past).toHaveLength(before);
+  });
+
   it('restores history snapshots with undo and redo', () => {
     useAppStore.getState().addDataset(dataset);
     useAppStore.getState().addChart(chart);
