@@ -20,7 +20,8 @@ export function compareValues(a: CellValue, b: CellValue): number {
 }
 
 function matchFilter(row: Row, filter: DataFilter, columns: DataColumn[]): boolean {
-  if (!filter.enabled || !filter.value) return true;
+  if (!filter.enabled) return true;
+  if (filter.operator !== 'empty' && filter.operator !== 'not_empty' && !filter.value) return true;
   const value = row[filter.columnId];
   const column = columns.find((item) => item.id === filter.columnId);
   const raw = filter.value.trim();
@@ -74,6 +75,9 @@ export function applySort(rows: Row[], sortRules: SortRule[]): Row[] {
   if (sortRules.length === 0) return rows;
   return [...rows].sort((a, b) => {
     for (const rule of sortRules) {
+      const aMissing = isMissing(a[rule.columnId]);
+      const bMissing = isMissing(b[rule.columnId]);
+      if (aMissing !== bMissing) return aMissing ? 1 : -1;
       const result = compareValues(a[rule.columnId], b[rule.columnId]);
       if (result !== 0) return rule.direction === 'asc' ? result : -result;
     }
