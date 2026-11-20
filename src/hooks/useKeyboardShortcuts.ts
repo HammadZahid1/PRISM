@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { useAppStore } from '@/stores/useAppStore';
+import { NAV_ITEMS } from '@/components/layout/Sidebar';
 
 function isTypingTarget(target: EventTarget | null): boolean {
   const element = target as HTMLElement | null;
@@ -22,6 +23,14 @@ export function useKeyboardShortcuts(): void {
         if (store.commandOpen) store.setCommandOpen(false);
         if (store.importOpen) store.setImportOpen(false);
         if (store.mobileNavOpen) store.setMobileNav(false);
+        return;
+      }
+      if (!mod && !isTypingTarget(event.target)) {
+        const destination = NAV_ITEMS.find((item) => item.shortcut === event.key);
+        if (destination) {
+          event.preventDefault();
+          store.setModule(destination.id);
+        }
         return;
       }
       if (!mod) return;
