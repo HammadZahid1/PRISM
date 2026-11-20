@@ -352,7 +352,11 @@ export const useAppStore = create<AppStore>()((set, get) => ({
   resetSettings: () => {
     const settings = { ...initialSettings };
     savePreferences(settings);
-    set({ settings, sidebarCollapsed: settings.sidebarCollapsed });
+    set((state) => ({
+      settings,
+      sidebarCollapsed: settings.sidebarCollapsed,
+      universeConfig: { ...state.universeConfig, maxPoints: settings.universePoints },
+    }));
     get().notify('Settings reset', 'Preferences were restored to defaults.', 'info');
   },
 

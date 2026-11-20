@@ -14,6 +14,7 @@ import { TimelineWorkspace } from '@/features/timeline/TimelineWorkspace';
 import { Playground } from '@/features/playground/Playground';
 import { PresetLibrary } from '@/features/presets/PresetLibrary';
 import { ExportStudio } from '@/features/export/ExportStudio';
+import { SettingsWorkspace } from '@/features/settings/SettingsWorkspace';
 
 export default function App() {
   const module = useAppStore((state) => state.module);
@@ -42,6 +43,8 @@ export default function App() {
       <PresetLibrary />
     ) : module === 'export' ? (
       <ExportStudio />
+    ) : module === 'settings' ? (
+      <SettingsWorkspace />
     ) : (
       <div className="flex h-full items-center justify-center p-6">
         <EmptyState
