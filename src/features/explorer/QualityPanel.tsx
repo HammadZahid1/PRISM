@@ -1,8 +1,11 @@
 import { useMemo } from 'react';
-import { AlertTriangle, CheckCircle2, Info, ShieldAlert, X } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, Download, Info, ShieldAlert, X } from 'lucide-react';
 import type { Dataset } from '@/types';
 import { analyzeDataQuality, qualityScoreLabel, type QualitySeverity } from '@/lib/data/quality';
 import { Badge } from '@/components/ui/Primitives';
+import { Button } from '@/components/ui/Button';
+import { downloadBlob } from '@/lib/utils';
+import { safeFileName } from '@/lib/data/export';
 
 const severityStyles: Record<QualitySeverity, string> = {
   info: 'border-white/[0.08] bg-white/[0.03] text-[#8a94a3]',
@@ -20,6 +23,21 @@ export function QualityPanel({ dataset, onClose }: { dataset: Dataset; onClose: 
   const report = useMemo(() => analyzeDataQuality(dataset), [dataset]);
   const tone = report.score >= 75 ? 'success' : report.score >= 55 ? 'warning' : 'danger';
 
+  const exportReport = () => {
+    const payload = {
+      format: 'prism-quality-report',
+      version: 1,
+      exportedAt: new Date().toISOString(),
+      dataset: { id: dataset.id, name: dataset.name },
+      report,
+    };
+    downloadBlob(
+      JSON.stringify(payload, null, 2),
+      `${safeFileName(dataset.name)}-quality.json`,
+      'application/json;charset=utf-8',
+    );
+  };
+
   return (
     <section className="panel shrink-0" aria-label="Data quality report">
       <div className="panel-header">
@@ -28,14 +46,19 @@ export function QualityPanel({ dataset, onClose }: { dataset: Dataset; onClose: 
           <h2 className="text-xs font-semibold text-[#e9edf3]">Data quality</h2>
           <Badge tone={tone}>{qualityScoreLabel(report.score)} · {report.score}/100</Badge>
         </div>
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label="Close data quality report"
-          className="text-[#5c6675] hover:text-[#e9edf3]"
-        >
-          <X size={14} />
-        </button>
+        <div className="flex items-center gap-2">
+          <Button size="sm" variant="ghost" icon={<Download size={12} />} onClick={exportReport}>
+            Export report
+          </Button>
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label="Close data quality report"
+            className="text-[#5c6675] hover:text-[#e9edf3]"
+          >
+            <X size={14} />
+          </button>
+        </div>
       </div>
       <div className="grid gap-4 p-4 md:grid-cols-[180px_1fr]">
         <div className="flex flex-col items-center justify-center rounded-lg border border-white/[0.06] bg-[#0d0f13] p-4">
