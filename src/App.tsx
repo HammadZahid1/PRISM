@@ -4,6 +4,7 @@ import { useAppStore } from '@/stores/useAppStore';
 import { EmptyState } from '@/components/ui/Feedback';
 import { NAV_ITEMS } from '@/components/layout/Sidebar';
 import { ImportDialog } from '@/features/dataset/ImportDialog';
+import { DataExplorer } from '@/features/explorer/DataExplorer';
 
 export default function App() {
   const module = useAppStore((state) => state.module);
@@ -12,6 +13,8 @@ export default function App() {
   const content =
     module === 'dashboard' ? (
       <Dashboard />
+    ) : module === 'explorer' ? (
+      <DataExplorer />
     ) : (
       <div className="flex h-full items-center justify-center p-6">
         <EmptyState
