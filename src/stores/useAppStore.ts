@@ -174,7 +174,7 @@ export const useAppStore = create<AppStore>()((set, get) => ({
   addDataset: (dataset) => {
     set((state) => ({
       history: pushedHistory(state),
-      datasets: [dataset, ...state.datasets],
+      datasets: [dataset, ...state.datasets.filter((item) => item.id !== dataset.id)],
       activeDatasetId: dataset.id,
       filters: [],
       sorts: [],
