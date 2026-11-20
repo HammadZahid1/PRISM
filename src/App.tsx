@@ -7,6 +7,8 @@ import { ImportDialog } from '@/features/dataset/ImportDialog';
 import { DataExplorer } from '@/features/explorer/DataExplorer';
 import { VisualizationStudio } from '@/features/studio/VisualizationStudio';
 import { UniverseWorkspace } from '@/features/universe/UniverseWorkspace';
+import { StatisticsWorkspaceRoute } from '@/features/analytics/Statistics';
+import { PatternExplorerRoute } from '@/features/analytics/PatternExplorer';
 
 export default function App() {
   const module = useAppStore((state) => state.module);
@@ -21,6 +23,10 @@ export default function App() {
       <VisualizationStudio />
     ) : module === 'universe' ? (
       <UniverseWorkspace />
+    ) : module === 'statistics' ? (
+      <StatisticsWorkspaceRoute />
+    ) : module === 'patterns' ? (
+      <PatternExplorerRoute />
     ) : (
       <div className="flex h-full items-center justify-center p-6">
         <EmptyState
