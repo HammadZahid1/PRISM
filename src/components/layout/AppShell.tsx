@@ -4,6 +4,7 @@ import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { Sidebar } from './Sidebar';
 import { Topbar } from './Topbar';
 import { ToastStack } from './ToastStack';
+import { CommandPalette } from './CommandPalette';
 
 export function AppShell({ children }: { children: ReactNode }) {
   const hydrate = useAppStore((state) => state.hydrate);
@@ -62,6 +63,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         </main>
       </div>
       <ToastStack />
+      <CommandPalette />
     </div>
   );
 }
