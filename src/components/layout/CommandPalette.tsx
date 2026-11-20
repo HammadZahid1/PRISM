@@ -19,7 +19,8 @@ import {
 import type { LucideIcon } from 'lucide-react';
 import { useAppStore, activeDataset, canRedo, canUndo } from '@/stores/useAppStore';
 import { NAV_ITEMS } from './Sidebar';
-import { CHART_TYPES, autoConfig, chartLabel } from '@/lib/viz/config';
+import { autoConfig, chartLabel } from '@/lib/viz/config';
+import { recommendCharts } from '@/lib/viz/recommend';
 import { Badge } from '@/components/ui/Primitives';
 
 type Category = 'Navigate' | 'Action' | 'Dataset' | 'Visualization' | 'Column';
@@ -122,16 +123,17 @@ export function CommandPalette() {
     );
 
     if (dataset) {
-      const type = (CHART_TYPES.find((item) => item.type === state.settings.defaultChart)?.type ?? 'bar');
+      const recommended = recommendCharts(dataset, 1)[0];
+      const config = recommended?.config ?? autoConfig(dataset, state.settings.defaultChart as Parameters<typeof autoConfig>[1]);
       items.push({
         id: 'action-new-chart',
         label: 'Create recommended chart',
-        detail: `Build a ${chartLabel(type)} visualization from ${dataset.name}`,
+        detail: `Build a ${chartLabel(config.type)} visualization from ${dataset.name}`,
         category: 'Action',
         icon: Sparkles,
-        keywords: 'visualization auto add generate',
+        keywords: 'visualization auto add generate suggest',
         run: () => {
-          state.addChart(autoConfig(dataset, type));
+          state.addChart(config);
           state.setModule('studio');
         },
       });
