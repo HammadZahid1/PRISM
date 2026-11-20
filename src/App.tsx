@@ -3,6 +3,7 @@ import { Dashboard } from '@/features/dashboard/Dashboard';
 import { useAppStore } from '@/stores/useAppStore';
 import { EmptyState } from '@/components/ui/Feedback';
 import { NAV_ITEMS } from '@/components/layout/Sidebar';
+import { ImportDialog } from '@/features/dataset/ImportDialog';
 
 export default function App() {
   const module = useAppStore((state) => state.module);
@@ -21,5 +22,10 @@ export default function App() {
       </div>
     );
 
-  return <AppShell>{content}</AppShell>;
+  return (
+    <>
+      <AppShell>{content}</AppShell>
+      <ImportDialog />
+    </>
+  );
 }
