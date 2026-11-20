@@ -6,6 +6,7 @@ import { Topbar } from './Topbar';
 import { ToastStack } from './ToastStack';
 import { CommandPalette } from './CommandPalette';
 import { ShortcutsDialog } from './ShortcutsDialog';
+import { NAV_ITEMS } from './Sidebar';
 
 export function AppShell({ children }: { children: ReactNode }) {
   const hydrate = useAppStore((state) => state.hydrate);
@@ -37,13 +38,19 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex h-full w-full overflow-hidden bg-base">
+      <a
+        href="#main-content"
+        className="sr-only z-[120] rounded-md bg-[var(--accent-cyan)] px-3 py-2 text-xs font-semibold text-[#041014] focus:not-sr-only focus:absolute focus:left-3 focus:top-3"
+      >
+        Skip to main content
+      </a>
       <div className="hidden lg:flex">
         <Sidebar />
       </div>
 
       {mobileNavOpen && (
-        <div className="fixed inset-0 z-[70] lg:hidden">
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setMobileNav(false)} />
+        <div className="fixed inset-0 z-[70] lg:hidden" role="dialog" aria-modal="true" aria-label="Navigation menu">
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setMobileNav(false)} aria-hidden="true" />
           <div className="relative h-full w-[min(280px,86vw)] animate-fade-in shadow-2xl">
             <Sidebar mobile />
           </div>
@@ -53,6 +60,9 @@ export function AppShell({ children }: { children: ReactNode }) {
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar />
         <main
+          id="main-content"
+          tabIndex={-1}
+          aria-label={`${NAV_ITEMS.find((item) => item.id === String(module))?.label ?? module} workspace`}
           className={`min-h-0 flex-1 overflow-hidden surface-grid transition-[opacity] ${
             settings.showGrid ? '' : '[&]:bg-none'
           }`}
