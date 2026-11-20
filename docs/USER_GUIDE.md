@@ -20,6 +20,8 @@ The **Explorer** applies the current filters, sorts, and search query to the act
 
 All of these controls affect charts, statistics, and exports because they share the same query state.
 
+Open **Quality** in the explorer toolbar for a report on missing values, duplicate rows, constant columns, numeric outliers, and identifier-like fields. The report can be downloaded as JSON for later review.
+
 ## Building charts
 
 1. Open **Studio** and create a chart.
@@ -28,6 +30,8 @@ All of these controls affect charts, statistics, and exports because they share 
 4. Duplicate a chart to compare variants, or maximize one for presentation.
 
 Chart configurations are reversible with undo/redo and can be exported as JSON from the Export workspace.
+
+The dashboard also shows up to three recommended chart types based on your active dataset's columns. Choosing **Add chart** creates the suggested configuration and opens the studio.
 
 ## Data Universe
 
