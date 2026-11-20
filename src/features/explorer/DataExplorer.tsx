@@ -25,6 +25,7 @@ export function DataExplorer() {
   const toggleSort = useAppStore((state) => state.toggleSort);
   const setImportOpen = useAppStore((state) => state.setImportOpen);
   const setModule = useAppStore((state) => state.setModule);
+  const maxTableRows = useAppStore((state) => state.settings.maxTableRows);
   const [page, setPage] = useState(0);
   const [pageSize, setPageSize] = useState(75);
   const [selectedRow, setSelectedRow] = useState<number | null>(null);
@@ -39,6 +40,11 @@ export function DataExplorer() {
 
   useEffect(() => setPage(0), [dataset?.id, rows.length, pageSize]);
 
+  useEffect(() => {
+    if (pageSize > maxTableRows) setPageSize(Math.min(75, maxTableRows));
+  }, [maxTableRows, pageSize]);
+
+  const pageSizeOptions = [25, 50, 75, 150, 300].filter((size) => size <= maxTableRows);
   const pageCount = Math.max(1, Math.ceil(rows.length / pageSize));
   const currentPage = Math.min(page, pageCount - 1);
   const visible = rows.slice(currentPage * pageSize, (currentPage + 1) * pageSize);
@@ -217,7 +223,7 @@ export function DataExplorer() {
                     onChange={(event) => setPageSize(Number(event.target.value))}
                     aria-label="Rows per page"
                   >
-                    {[25, 50, 75, 150, 300].map((size) => (
+                    {pageSizeOptions.map((size) => (
                       <option key={size} value={size}>{size} / page</option>
                     ))}
                   </select>
