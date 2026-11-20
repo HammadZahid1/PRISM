@@ -16,6 +16,7 @@ import { Panel } from '@/components/ui/Panel';
 import { formatDate, formatNumber } from '@/lib/utils';
 import type { ModuleId } from '@/types';
 import { RecentDatasets } from './RecentDatasets';
+import { SampleGallery } from './SampleGallery';
 
 const quickActions: { label: string; detail: string; icon: typeof Database; module: ModuleId }[] = [
   { label: 'Explore data', detail: 'Sort, filter and inspect rows', icon: Table2, module: 'explorer' },
@@ -69,6 +70,7 @@ export function Dashboard() {
         </div>
 
         <RecentDatasets onBrowseSamples={() => setModule('presets')} />
+        <SampleGallery />
 
         {!activeDataset && (
           <EmptyState
