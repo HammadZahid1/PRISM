@@ -5,8 +5,8 @@ describe('safe expression language', () => {
   it('evaluates arithmetic with correct precedence', () => {
     const evaluate = compileExpression('[price] * [qty] + 5', ['price', 'qty']);
     expect(evaluate({ price: 3, qty: 4 })).toBe(17);
-    expect(compileExpression('10 - 2 * 3', [])()).toBe(4);
-    expect(compileExpression('-(2 + 3)', [])()).toBe(-5);
+    expect(compileExpression('10 - 2 * 3', [])({})).toBe(4);
+    expect(compileExpression('-(2 + 3)', [])({})).toBe(-5);
   });
 
   it('supports comparisons and boolean operators', () => {
@@ -19,7 +19,7 @@ describe('safe expression language', () => {
     expect(compileExpression('round([value], 2)', ['value'])({ value: 1.236 })).toBe(1.24);
     expect(compileExpression('max([a], [b], 2)', ['a', 'b'])({ a: 4, b: 9 })).toBe(9);
     expect(compileExpression('if([a] > 2, 100, 0)', ['a'])({ a: 3 })).toBe(100);
-    expect(compileExpression('abs(-7)', [])()).toBe(7);
+    expect(compileExpression('abs(-7)', [])({})).toBe(7);
   });
 
   it('handles missing values without throwing', () => {
