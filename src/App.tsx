@@ -13,6 +13,7 @@ import { TransformationStudio } from '@/features/transform/TransformationStudio'
 import { TimelineWorkspace } from '@/features/timeline/TimelineWorkspace';
 import { Playground } from '@/features/playground/Playground';
 import { PresetLibrary } from '@/features/presets/PresetLibrary';
+import { ExportStudio } from '@/features/export/ExportStudio';
 
 export default function App() {
   const module = useAppStore((state) => state.module);
@@ -39,6 +40,8 @@ export default function App() {
       <Playground />
     ) : module === 'presets' ? (
       <PresetLibrary />
+    ) : module === 'export' ? (
+      <ExportStudio />
     ) : (
       <div className="flex h-full items-center justify-center p-6">
         <EmptyState
