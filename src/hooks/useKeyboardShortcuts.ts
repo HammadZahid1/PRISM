@@ -22,10 +22,16 @@ export function useKeyboardShortcuts(): void {
       if (event.key === 'Escape') {
         if (store.commandOpen) store.setCommandOpen(false);
         if (store.importOpen) store.setImportOpen(false);
+        if (store.shortcutsOpen) store.setShortcutsOpen(false);
         if (store.mobileNavOpen) store.setMobileNav(false);
         return;
       }
       if (!mod && !isTypingTarget(event.target)) {
+        if (event.key === '?') {
+          event.preventDefault();
+          store.setShortcutsOpen(true);
+          return;
+        }
         const destination = NAV_ITEMS.find((item) => item.shortcut === event.key);
         if (destination) {
           event.preventDefault();

@@ -5,6 +5,7 @@ import {
   Download,
   Eye,
   Grid2X2,
+  Keyboard,
   Menu,
   Redo2,
   Search,
@@ -34,6 +35,7 @@ export function Topbar() {
   const setInspectorOpen = useAppStore((state) => state.setInspectorOpen);
   const showGrid = useAppStore((state) => state.settings.showGrid);
   const updateSettings = useAppStore((state) => state.updateSettings);
+  const setShortcutsOpen = useAppStore((state) => state.setShortcutsOpen);
 
   const moduleLabel = useMemo(() => NAV_ITEMS.find((item) => item.id === module)?.label ?? module, [module]);
 
@@ -95,6 +97,12 @@ export function Topbar() {
           icon={<Grid2X2 size={14} />}
           active={showGrid}
           onClick={() => updateSettings({ showGrid: !showGrid })}
+          className="hidden sm:inline-flex"
+        />
+        <IconButton
+          label="Keyboard shortcuts (?)"
+          icon={<Keyboard size={14} />}
+          onClick={() => setShortcutsOpen(true)}
           className="hidden sm:inline-flex"
         />
         <button

@@ -5,6 +5,7 @@ import { Sidebar } from './Sidebar';
 import { Topbar } from './Topbar';
 import { ToastStack } from './ToastStack';
 import { CommandPalette } from './CommandPalette';
+import { ShortcutsDialog } from './ShortcutsDialog';
 
 export function AppShell({ children }: { children: ReactNode }) {
   const hydrate = useAppStore((state) => state.hydrate);
@@ -64,6 +65,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       </div>
       <ToastStack />
       <CommandPalette />
+      <ShortcutsDialog />
     </div>
   );
 }

@@ -8,6 +8,7 @@ import {
   Database,
   FileUp,
   FilterX,
+  Keyboard,
   Redo2,
   RotateCcw,
   Search,
@@ -69,6 +70,15 @@ export function CommandPalette() {
         icon: FileUp,
         keywords: 'upload file open csv json tsv',
         run: () => state.setImportOpen(true),
+      },
+      {
+        id: 'action-shortcuts',
+        label: 'Keyboard shortcuts',
+        detail: 'Show all global and workspace shortcuts',
+        category: 'Action',
+        icon: Keyboard,
+        keywords: 'help keys hotkeys question mark',
+        run: () => state.setShortcutsOpen(true),
       },
       {
         id: 'action-undo',
