@@ -23,6 +23,7 @@ import {
   removePersistedDataset,
 } from '@/lib/storage/idb';
 import { defaultUniverseConfig } from '@/lib/viz/universe';
+import type { WorkspaceBackup } from '@/lib/storage/workspace';
 
 interface Snapshot {
   datasets: Dataset[];
@@ -104,6 +105,7 @@ interface AppActions {
   redo: () => void;
   resetWorkspace: () => void;
   clearSavedData: () => Promise<void>;
+  restoreWorkspace: (backup: WorkspaceBackup) => void;
 }
 
 export type AppStore = AppState & AppActions;
@@ -401,6 +403,29 @@ export const useAppStore = create<AppStore>()((set, get) => ({
     await clearWorkspaceStorage();
     clearPreferences();
     get().notify('Saved data cleared', 'Local browser storage has been emptied.', 'success');
+  },
+  restoreWorkspace: (backup) => {
+    const charts = backup.charts.filter((chart) => backup.datasets.some((dataset) => dataset.id === chart.datasetId));
+    set((state) => ({
+      history: pushedHistory(state),
+      datasets: backup.datasets,
+      activeDatasetId: backup.datasets[0]?.id ?? null,
+      visualizations: charts,
+      selectedChartId: charts[0]?.id ?? null,
+      filters: [],
+      sorts: [],
+      search: '',
+      module: 'dashboard',
+    }));
+    if (backup.settings) get().updateSettings(backup.settings);
+    if (get().settings.persistDatasets) {
+      backup.datasets.forEach((dataset) => {
+        if (datasetStorageSize(dataset) < 4_000_000) void persistDataset(dataset);
+      });
+    }
+    void persistCharts(charts);
+    get().recordActivity('Backup restored', `${backup.datasets.length} datasets · ${charts.length} charts`, 'dataset');
+    get().notify('Workspace restored', 'Your backup has been loaded into PRISM.', 'success');
   },
 }));
 
