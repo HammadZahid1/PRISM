@@ -27,6 +27,8 @@ PRISM is a premium, browser-based interactive data visualization workspace. It r
 | Export | Download filtered data as CSV/JSON, charts as PNG/SVG, and configurations. |
 | Settings | Appearance, performance, storage, backup, and restore controls. |
 
+Additional capabilities include dataset quality reports, one-click chart recommendations, a searchable command palette, and a local shortcut reference (`?`).
+
 ## Getting started
 
 ```bash
@@ -58,6 +60,7 @@ npm run build
 | `Ctrl/Cmd + Z` | Undo |
 | `Ctrl/Cmd + Shift + Z` / `Ctrl/Cmd + Y` | Redo |
 | `1`–`7` | Switch between main modules |
+| `?` | Show the keyboard shortcut reference |
 | `Esc` | Close dialogs and overlays |
 
 ## Architecture
@@ -69,7 +72,14 @@ npm run build
 - `src/features` — workspaces composed from shared UI primitives.
 - `src/components` — layout, charts, and reusable UI primitives.
 
-See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) and [`docs/USER_GUIDE.md`](docs/USER_GUIDE.md) for deeper detail.
+## Documentation
+
+- [Architecture](docs/ARCHITECTURE.md)
+- [User guide](docs/USER_GUIDE.md)
+- [Contributing](CONTRIBUTING.md)
+- [Changelog](CHANGELOG.md)
+
+CI runs `npm run check` on every push and pull request to `main`.
 
 ## License
 
