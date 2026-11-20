@@ -6,6 +6,7 @@ import {
   Download,
   FileUp,
   Filter,
+  ShieldCheck,
   Table2,
 } from 'lucide-react';
 import { useAppStore } from '@/stores/useAppStore';
@@ -17,6 +18,7 @@ import { Panel } from '@/components/ui/Panel';
 import { FilterBar } from './FilterBar';
 import { DataInspector } from './DataInspector';
 import { toggleSortIndicator } from './tableUtils';
+import { QualityPanel } from './QualityPanel';
 import { toDisplay } from '@/lib/utils';
 
 export function DataExplorer() {
@@ -32,6 +34,7 @@ export function DataExplorer() {
   const [hiddenColumns, setHiddenColumns] = useState<string[]>([]);
   const [showColumns, setShowColumns] = useState(false);
   const [showInspector, setShowInspector] = useState(true);
+  const [showQuality, setShowQuality] = useState(false);
 
   const columns = useMemo(
     () => dataset?.columns.filter((column) => !hiddenColumns.includes(column.id)) ?? [],
@@ -82,10 +85,19 @@ export function DataExplorer() {
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <Button icon={<FileUp size={13} />} onClick={() => setImportOpen(true)}>Import</Button>
+          <Button
+            icon={<ShieldCheck size={13} />}
+            active={showQuality}
+            onClick={() => setShowQuality((value) => !value)}
+          >
+            Quality
+          </Button>
           <Button icon={<Download size={13} />} onClick={() => setModule('export')}>Export</Button>
           <Button variant="primary" onClick={() => setModule('studio')}>Visualize</Button>
         </div>
       </div>
+
+      {showQuality && <QualityPanel dataset={dataset} onClose={() => setShowQuality(false)} />}
 
       <Panel
         className="min-h-0 flex-1"
