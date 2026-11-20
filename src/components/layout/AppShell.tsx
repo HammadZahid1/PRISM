@@ -1,4 +1,5 @@
 import { useEffect, type ReactNode } from 'react';
+import { MotionConfig } from 'framer-motion';
 import { useAppStore } from '@/stores/useAppStore';
 import { useKeyboardShortcuts } from '@/hooks/useKeyboardShortcuts';
 import { Sidebar } from './Sidebar';
@@ -37,45 +38,47 @@ export function AppShell({ children }: { children: ReactNode }) {
   }, [mobileNavOpen, setMobileNav]);
 
   return (
-    <div className="flex h-full w-full overflow-hidden bg-base">
-      <a
-        href="#main-content"
-        className="sr-only z-[120] rounded-md bg-[var(--accent-cyan)] px-3 py-2 text-xs font-semibold text-[#041014] focus:not-sr-only focus:absolute focus:left-3 focus:top-3"
-      >
-        Skip to main content
-      </a>
-      <div className="hidden lg:flex">
-        <Sidebar />
-      </div>
-
-      {mobileNavOpen && (
-        <div className="fixed inset-0 z-[70] lg:hidden" role="dialog" aria-modal="true" aria-label="Navigation menu">
-          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setMobileNav(false)} aria-hidden="true" />
-          <div className="relative h-full w-[min(280px,86vw)] animate-fade-in shadow-2xl">
-            <Sidebar mobile />
-          </div>
-        </div>
-      )}
-
-      <div className="flex min-w-0 flex-1 flex-col">
-        <Topbar />
-        <main
-          id="main-content"
-          tabIndex={-1}
-          aria-label={`${NAV_ITEMS.find((item) => item.id === String(module))?.label ?? module} workspace`}
-          className={`min-h-0 flex-1 overflow-hidden surface-grid transition-[opacity] ${
-            settings.showGrid ? '' : '[&]:bg-none'
-          }`}
-          style={{ backgroundSize: '32px 32px' }}
+    <MotionConfig reducedMotion="user">
+      <div className="flex h-full w-full overflow-hidden bg-base">
+        <a
+          href="#main-content"
+          className="sr-only z-[120] rounded-md bg-[var(--accent-cyan)] px-3 py-2 text-xs font-semibold text-[#041014] focus:not-sr-only focus:absolute focus:left-3 focus:top-3"
         >
-          <div className={`h-full w-full ${settings.animations ? 'animate-fade-in' : ''}`} key={`${sidebarCollapsed}`}>
-            {children}
+          Skip to main content
+        </a>
+        <div className="hidden lg:flex">
+          <Sidebar />
+        </div>
+
+        {mobileNavOpen && (
+          <div className="fixed inset-0 z-[70] lg:hidden" role="dialog" aria-modal="true" aria-label="Navigation menu">
+            <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setMobileNav(false)} aria-hidden="true" />
+            <div className="relative h-full w-[min(280px,86vw)] animate-fade-in shadow-2xl">
+              <Sidebar mobile />
+            </div>
           </div>
-        </main>
+        )}
+
+        <div className="flex min-w-0 flex-1 flex-col">
+          <Topbar />
+          <main
+            id="main-content"
+            tabIndex={-1}
+            aria-label={`${NAV_ITEMS.find((item) => item.id === String(module))?.label ?? module} workspace`}
+            className={`min-h-0 flex-1 overflow-hidden surface-grid transition-[opacity] ${
+              settings.showGrid ? '' : '[&]:bg-none'
+            }`}
+            style={{ backgroundSize: '32px 32px' }}
+          >
+            <div className={`h-full w-full ${settings.animations ? 'animate-fade-in' : ''}`} key={`${sidebarCollapsed}`}>
+              {children}
+            </div>
+          </main>
+        </div>
+        <ToastStack />
+        <CommandPalette />
+        <ShortcutsDialog />
       </div>
-      <ToastStack />
-      <CommandPalette />
-      <ShortcutsDialog />
-    </div>
+    </MotionConfig>
   );
 }
