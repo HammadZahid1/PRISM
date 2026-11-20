@@ -56,7 +56,7 @@ function keyRowsById(columns: DataColumn[], rows: Record<string, CellValue>[]): 
   rows.forEach((row) => {
     columns.forEach((column) => {
       row[column.id] = row[column.name] ?? null;
-      delete row[column.name];
+      if (column.id !== column.name) delete row[column.name];
     });
   });
 }
