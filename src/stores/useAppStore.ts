@@ -185,7 +185,7 @@ export const useAppStore = create<AppStore>()((set, get) => ({
           at: Date.now(),
           label: 'Dataset loaded',
           detail: `${dataset.name} · ${dataset.rows.length.toLocaleString()} rows`,
-          kind: 'dataset',
+          kind: 'dataset' as const,
         },
         ...state.activity,
       ].slice(0, 40),
@@ -232,7 +232,7 @@ export const useAppStore = create<AppStore>()((set, get) => ({
       history: pushedHistory(state),
       datasets: state.datasets.map((item) => (item.id === dataset.id ? dataset : item)),
       activity: [
-        { id: uid('act'), at: Date.now(), label, detail: dataset.name, kind: 'transform' },
+        { id: uid('act'), at: Date.now(), label, detail: dataset.name, kind: 'transform' as const },
         ...state.activity,
       ].slice(0, 40),
     }));
@@ -295,7 +295,7 @@ export const useAppStore = create<AppStore>()((set, get) => ({
       visualizations: [...state.visualizations, config],
       selectedChartId: config.id,
       activity: [
-        { id: uid('act'), at: Date.now(), label: 'Visualization created', detail: config.title, kind: 'visualization' },
+        { id: uid('act'), at: Date.now(), label: 'Visualization created', detail: config.title, kind: 'visualization' as const },
         ...state.activity,
       ].slice(0, 40),
     }));

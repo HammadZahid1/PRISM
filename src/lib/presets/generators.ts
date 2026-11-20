@@ -59,7 +59,6 @@ export function buildDataset(
 
 function population(): Dataset {
   const rand = createRandom(11);
-  const regions = ['Asia', 'Europe', 'Africa', 'Americas', 'Oceania'];
   const countries = [
     ['Asia', 'Japan'], ['Asia', 'India'], ['Asia', 'Indonesia'], ['Asia', 'Vietnam'],
     ['Europe', 'Germany'], ['Europe', 'France'], ['Europe', 'Poland'], ['Europe', 'Sweden'],
