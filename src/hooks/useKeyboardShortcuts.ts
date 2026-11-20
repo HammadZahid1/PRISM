@@ -1,60 +1,46 @@
 import { useEffect } from 'react';
 import { useAppStore } from '@/stores/useAppStore';
 import { NAV_ITEMS } from '@/components/layout/Sidebar';
-
-function isTypingTarget(target: EventTarget | null): boolean {
-  const element = target as HTMLElement | null;
-  if (!element) return false;
-  return (
-    element.tagName === 'INPUT' ||
-    element.tagName === 'TEXTAREA' ||
-    element.tagName === 'SELECT' ||
-    element.isContentEditable
-  );
-}
+import { resolveShortcut } from './shortcutRules';
 
 export function useKeyboardShortcuts(): void {
   useEffect(() => {
     const handler = (event: KeyboardEvent) => {
-      const mod = event.metaKey || event.ctrlKey;
       const store = useAppStore.getState();
+      const action = resolveShortcut(event, store, NAV_ITEMS);
+      if (!action) return;
 
-      if (event.key === 'Escape') {
-        if (store.commandOpen) store.setCommandOpen(false);
-        if (store.importOpen) store.setImportOpen(false);
-        if (store.shortcutsOpen) store.setShortcutsOpen(false);
-        if (store.mobileNavOpen) store.setMobileNav(false);
-        return;
-      }
-      if (!mod && !isTypingTarget(event.target)) {
-        if (event.key === '?') {
+      switch (action.type) {
+        case 'close-overlays':
+          if (store.commandOpen) store.setCommandOpen(false);
+          if (store.importOpen) store.setImportOpen(false);
+          if (store.shortcutsOpen) store.setShortcutsOpen(false);
+          if (store.mobileNavOpen) store.setMobileNav(false);
+          break;
+        case 'shortcuts':
           event.preventDefault();
           store.setShortcutsOpen(true);
-          return;
-        }
-        const destination = NAV_ITEMS.find((item) => item.shortcut === event.key);
-        if (destination) {
+          break;
+        case 'navigate':
           event.preventDefault();
-          store.setModule(destination.id);
-        }
-        return;
-      }
-      if (!mod) return;
-
-      const key = event.key.toLowerCase();
-      if (key === 'k') {
-        event.preventDefault();
-        store.setCommandOpen(!store.commandOpen);
-      } else if (key === 'o') {
-        event.preventDefault();
-        store.setImportOpen(true);
-      } else if (key === 'z' && !isTypingTarget(event.target)) {
-        event.preventDefault();
-        if (event.shiftKey) store.redo();
-        else store.undo();
-      } else if (key === 'y' && !isTypingTarget(event.target)) {
-        event.preventDefault();
-        store.redo();
+          store.setModule(action.id as Parameters<typeof store.setModule>[0]);
+          break;
+        case 'command':
+          event.preventDefault();
+          store.setCommandOpen(!store.commandOpen);
+          break;
+        case 'import':
+          event.preventDefault();
+          store.setImportOpen(true);
+          break;
+        case 'undo':
+          event.preventDefault();
+          store.undo();
+          break;
+        case 'redo':
+          event.preventDefault();
+          store.redo();
+          break;
       }
     };
     window.addEventListener('keydown', handler);
