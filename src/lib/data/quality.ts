@@ -21,11 +21,11 @@ export interface QualityReport {
   scannedRows: number;
 }
 
-const TIMESTAMP_HINTS = ['id', 'uuid', 'key', 'timestamp', 'created', 'updated', 'date'];
+const IDENTIFIER_HINTS = ['id', 'uuid', 'key'];
 
-function isTimestampLike(name: string): boolean {
+function isIdentifierLike(name: string): boolean {
   const lower = name.toLowerCase();
-  return TIMESTAMP_HINTS.some((hint) => lower.includes(hint));
+  return IDENTIFIER_HINTS.some((hint) => lower === hint || lower.endsWith(`_${hint}`));
 }
 
 function duplicateCount(dataset: Dataset): number {
@@ -105,7 +105,7 @@ export function analyzeDataQuality(dataset: Dataset): QualityReport {
       }
     }
 
-    if (column.type === 'string' && distinct.size === total && !isTimestampLike(column.name)) {
+    if (column.type === 'string' && distinct.size === total && isIdentifierLike(column.name)) {
       issues.push({
         id: `unique-${column.id}`,
         severity: 'info',
@@ -140,7 +140,8 @@ export function analyzeDataQuality(dataset: Dataset): QualityReport {
 
   const cellCount = Math.max(1, total * Math.max(1, dataset.columns.length));
   const duplicatePenalty = total ? duplicates / total : 0;
-  const score = Math.max(0, Math.round(100 - (missingCells / cellCount) * 70 - duplicatePenalty * 25));
+  const rawScore = 100 - (missingCells / cellCount) * 70 - duplicatePenalty * 25;
+  const score = total === 0 ? 0 : Math.max(0, Math.round(rawScore));
   const severityRank: Record<QualitySeverity, number> = { danger: 0, warning: 1, info: 2 };
   issues.sort((a, b) => severityRank[a.severity] - severityRank[b.severity] || b.count - a.count);
 
