@@ -99,13 +99,13 @@ export function recommendCharts(dataset: Dataset, limit = 4): ChartRecommendatio
   if (lowCardinality.length && numeric.length) {
     candidates.push({
       type: 'treemap',
-      score: 64,
+      score: 62,
       reason: `A treemap shows each ${lowCardinality[0].name} share of the total.`,
     });
     if (cardinality(dataset, lowCardinality[0].id) <= 8) {
       candidates.push({
         type: 'pie',
-        score: 60,
+        score: 68,
         reason: `There are few enough ${lowCardinality[0].name} values for a part-to-whole view.`,
       });
     }
