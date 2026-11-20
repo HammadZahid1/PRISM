@@ -1,0 +1,136 @@
+@import './tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body,
+  #root {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+
+  body {
+    background:
+      radial-gradient(circle at 16% -10%, rgba(34, 211, 238, 0.055), transparent 42%),
+      radial-gradient(circle at 90% 0%, rgba(139, 124, 246, 0.05), transparent 40%),
+      var(--bg-base);
+    color: var(--text-primary);
+    font-family: Inter, Geist, Manrope, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-size: 13px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow: hidden;
+  }
+
+  ::selection {
+    background: rgba(34, 211, 238, 0.25);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: 2px;
+  }
+
+  input,
+  select,
+  textarea,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  input[type='range'] {
+    accent-color: var(--accent-cyan);
+  }
+
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #2b323c transparent;
+  }
+
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  *::-webkit-scrollbar-thumb {
+    background: #2b323c;
+    border-radius: 999px;
+  }
+
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply rounded-[var(--radius-lg)] border border-white/[0.07] bg-[#101216]/90 shadow-panel;
+  }
+
+  .panel-header {
+    @apply flex items-center justify-between gap-3 border-b border-white/[0.06] px-4 py-3;
+  }
+
+  .surface-grid {
+    background-image:
+      linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  .mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .label {
+    @apply text-[10px] font-semibold uppercase tracking-[0.14em] text-[#6c7685];
+  }
+
+  .control {
+    @apply h-8 rounded-md border border-white/[0.09] bg-[#14171c] px-2.5 text-xs text-[#e9edf3] outline-none transition-colors placeholder:text-[#5c6675] hover:border-white/[0.16] focus:border-[var(--accent-cyan)];
+  }
+
+  .icon-button {
+    @apply inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-md text-[#8a94a3] transition-colors hover:bg-white/[0.06] hover:text-[#e9edf3] disabled:cursor-not-allowed disabled:opacity-35;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-md border border-white/[0.08] bg-white/[0.035] px-2 py-1 text-[10px] font-medium text-[#a2acba];
+  }
+
+  .recharts-text {
+    font-family: var(--font-mono) !important;
+    font-size: 10px !important;
+    fill: #7d8798;
+  }
+
+  .recharts-cartesian-grid line {
+    stroke: rgba(255, 255, 255, 0.055);
+  }
+
+  .recharts-tooltip-wrapper {
+    outline: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
