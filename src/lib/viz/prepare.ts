@@ -152,6 +152,9 @@ function boxData(rows: Row[], config: ChartConfig): PreparedChart {
     if (value !== null) grouped.get(key)!.push(value);
   });
   const points = [...grouped.entries()].slice(0, config.limit).map(([name, values]) => {
+    if (values.length === 0) {
+      return { name, q1: 0, median: 0, q3: 0, low: 0, high: 0, outliers: [], count: 0 };
+    }
     const q1 = quantile(values, 0.25);
     const median = quantile(values, 0.5);
     const q3 = quantile(values, 0.75);
