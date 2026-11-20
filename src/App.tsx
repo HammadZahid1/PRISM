@@ -11,6 +11,7 @@ import { StatisticsWorkspaceRoute } from '@/features/analytics/Statistics';
 import { PatternExplorerRoute } from '@/features/analytics/PatternExplorer';
 import { TransformationStudio } from '@/features/transform/TransformationStudio';
 import { TimelineWorkspace } from '@/features/timeline/TimelineWorkspace';
+import { Playground } from '@/features/playground/Playground';
 
 export default function App() {
   const module = useAppStore((state) => state.module);
@@ -33,6 +34,8 @@ export default function App() {
       <TransformationStudio />
     ) : module === 'timeline' ? (
       <TimelineWorkspace />
+    ) : module === 'playground' ? (
+      <Playground />
     ) : (
       <div className="flex h-full items-center justify-center p-6">
         <EmptyState
