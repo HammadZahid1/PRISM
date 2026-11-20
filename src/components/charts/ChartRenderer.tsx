@@ -27,7 +27,7 @@ import {
 } from 'recharts';
 import type { ChartConfig, Dataset, SelectedDatum } from '@/types';
 import { prepareChartData } from '@/lib/viz/prepare';
-import { validateConfig } from '@/lib/viz/config';
+import { chartLabel, validateConfig } from '@/lib/viz/config';
 import { categoryColor, heatColor } from '@/lib/color';
 import { formatNumber } from '@/lib/utils';
 import { Notice } from '@/components/ui/Feedback';
@@ -425,7 +425,12 @@ export function ChartRenderer({ config, dataset, rows, onSelect, compact = false
   }
 
   return (
-    <div data-chart-id={config.id} className="h-full w-full min-h-[220px]">
+    <div
+      data-chart-id={config.id}
+      role="group"
+      aria-label={`${config.title}: ${chartLabel(config.type)} visualization using ${dataset.name}`}
+      className="h-full w-full min-h-[220px]"
+    >
       <ResponsiveContainer width="100%" height="100%">
         {chart as ReactElement}
       </ResponsiveContainer>
