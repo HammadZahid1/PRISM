@@ -9,6 +9,7 @@ import { VisualizationStudio } from '@/features/studio/VisualizationStudio';
 import { UniverseWorkspace } from '@/features/universe/UniverseWorkspace';
 import { StatisticsWorkspaceRoute } from '@/features/analytics/Statistics';
 import { PatternExplorerRoute } from '@/features/analytics/PatternExplorer';
+import { TransformationStudio } from '@/features/transform/TransformationStudio';
 
 export default function App() {
   const module = useAppStore((state) => state.module);
@@ -27,6 +28,8 @@ export default function App() {
       <StatisticsWorkspaceRoute />
     ) : module === 'patterns' ? (
       <PatternExplorerRoute />
+    ) : module === 'transform' ? (
+      <TransformationStudio />
     ) : (
       <div className="flex h-full items-center justify-center p-6">
         <EmptyState
